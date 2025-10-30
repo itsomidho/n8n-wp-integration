@@ -94,14 +94,20 @@ For security, set up an API key using one of these methods:
    ```
 3. Run it once, then delete or deactivate the snippet
 
-#### Option B: Using wp-config.php
+#### Option B: Using functions.php
 
-Add to your `wp-config.php` file (before "That's all, stop editing!"):
+Add to your theme's `functions.php` file (or create a custom plugin):
 
 ```php
-// Set n8n API Key
-update_option('n8n_wp_api_key', 'your-secure-random-api-key-here');
+// Set n8n API Key (run once, then remove)
+add_action('init', function() {
+    if (!get_option('n8n_wp_api_key')) {
+        update_option('n8n_wp_api_key', 'your-secure-random-api-key-here');
+    }
+});
 ```
+
+**Note**: Remove this code after the API key is set to avoid running it on every page load.
 
 #### Option C: Using WP-CLI
 

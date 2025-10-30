@@ -234,7 +234,7 @@ The plugin returns standard HTTP status codes:
 4. **Extensibility**: Clean class structure for easy modifications
 5. **Documentation**: Comprehensive inline and external documentation
 6. **Error Handling**: Proper error messages and status codes
-7. **Internationalization Ready**: Uses `__()` for text strings
+7. **Internationalization Ready**: Text domain defined for future translation support
 8. **Clean Uninstall**: Removes all traces when uninstalled
 
 ## Testing Recommendations
