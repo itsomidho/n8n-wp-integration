@@ -2,6 +2,8 @@
 
 A WordPress plugin that integrates n8n workflows with WordPress through a custom REST API. This plugin creates a custom MySQL table and provides RESTful endpoints for inserting, retrieving, updating, and deleting data from n8n workflows.
 
+**Built with Object-Oriented Programming (OOP)** principles featuring modular architecture, PSR-4 autoloading, and dependency injection.
+
 ## Features
 
 - ✅ Custom MySQL table for storing n8n workflow data
@@ -12,6 +14,9 @@ A WordPress plugin that integrates n8n workflows with WordPress through a custom
 - ✅ Automatic timestamp tracking (created_at, updated_at)
 - ✅ Query filtering and pagination
 - ✅ Clean uninstall (removes table and options)
+- ✅ **OOP Architecture** with separation of concerns
+- ✅ **PSR-4 Autoloading** for automatic class loading
+- ✅ **Modular Design** easy to extend and maintain
 
 ## Installation
 
@@ -27,6 +32,31 @@ A WordPress plugin that integrates n8n workflows with WordPress through a custom
    - Click **Activate**
 
 3. The plugin will automatically create the custom database table `wp_n8n_data` (prefix may vary based on your WordPress configuration)
+
+## Architecture
+
+This plugin follows **modern OOP principles** with a clean, modular structure:
+
+```
+n8n-wp-integration/
+├── n8n-wp-integration.php    # Bootstrap (32 lines)
+├── includes/
+│   ├── class-autoloader.php   # PSR-4 autoloader
+│   ├── class-plugin.php       # Main orchestrator
+│   ├── class-database.php     # Database operations
+│   ├── class-api.php          # REST API endpoints
+│   └── class-auth.php         # Authentication
+└── uninstall.php              # Cleanup script
+```
+
+**Key Benefits:**
+- **Separation of Concerns**: Each class has a single responsibility
+- **PSR-4 Autoloading**: Automatic class loading, no manual includes
+- **Dependency Injection**: Loose coupling for better testability
+- **Easy to Extend**: Add new features without modifying existing code
+- **Maintainable**: Clear structure makes updates simple
+
+For detailed architecture documentation, see [PLUGIN-STRUCTURE.md](PLUGIN-STRUCTURE.md).
 
 ## Configuration
 
