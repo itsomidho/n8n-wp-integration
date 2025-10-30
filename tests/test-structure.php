@@ -73,7 +73,8 @@ $files_to_check = array_merge(
 
 foreach ($files_to_check as $file) {
     $path = N8N_WP_PLUGIN_DIR . $file;
-    exec("php -l {$path} 2>&1", $output, $return_code);
+    $output = array(); // Reset output array for each iteration
+    exec("php -l " . escapeshellarg($path) . " 2>&1", $output, $return_code);
     if ($return_code === 0) {
         echo "✓ {$file} - No syntax errors\n";
     } else {
