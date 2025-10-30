@@ -26,12 +26,18 @@ A WordPress plugin that integrates n8n workflows with WordPress through a custom
    git clone https://github.com/itsomidho/n8n-wp-integration.git
    ```
 
-2. Activate the plugin through the WordPress admin panel:
+2. Install Composer dependencies:
+   ```bash
+   cd n8n-wp-integration
+   composer install --no-dev
+   ```
+
+3. Activate the plugin through the WordPress admin panel:
    - Navigate to **Plugins** → **Installed Plugins**
    - Find "n8n WordPress Integration"
    - Click **Activate**
 
-3. The plugin will automatically create the custom database table `wp_n8n_data` (prefix may vary based on your WordPress configuration)
+4. The plugin will automatically create the custom database table `wp_n8n_data` (prefix may vary based on your WordPress configuration)
 
 ## Architecture
 
@@ -39,9 +45,10 @@ This plugin follows **modern OOP principles** with a clean, modular structure:
 
 ```
 n8n-wp-integration/
-├── n8n-wp-integration.php    # Bootstrap (32 lines)
+├── composer.json              # Composer configuration
+├── n8n-wp-integration.php     # Bootstrap
 ├── includes/
-│   ├── class-autoloader.php   # PSR-4 autoloader
+│   ├── class-autoloader.php   # Fallback PSR-4 autoloader
 │   ├── class-plugin.php       # Main orchestrator
 │   ├── class-database.php     # Database operations
 │   ├── class-api.php          # REST API endpoints
@@ -51,7 +58,7 @@ n8n-wp-integration/
 
 **Key Benefits:**
 - **Separation of Concerns**: Each class has a single responsibility
-- **PSR-4 Autoloading**: Automatic class loading, no manual includes
+- **Composer PSR-4 Autoloading**: Automatic class loading with Composer
 - **Dependency Injection**: Loose coupling for better testability
 - **Easy to Extend**: Add new features without modifying existing code
 - **Maintainable**: Clear structure makes updates simple
@@ -60,9 +67,9 @@ For detailed architecture documentation, see [PLUGIN-STRUCTURE.md](PLUGIN-STRUCT
 
 ## Configuration
 
-### Setting up API Key (Recommended)
+### Setting up API Key (Required)
 
-For security, it's recommended to set up an API key:
+**API key authentication is required** for all API endpoints. Set up your API key:
 
 1. Add this line to your `wp-config.php` file or use the WordPress options:
    ```php
@@ -75,6 +82,8 @@ For security, it's recommended to set up an API key:
    ```
 
 Replace `your-secure-api-key-here` with a strong, random string.
+
+**Note:** Without a configured API key, all API requests will be rejected with a 401 Unauthorized error.
 
 ## API Documentation
 

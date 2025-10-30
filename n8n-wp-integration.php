@@ -21,12 +21,15 @@ define('N8N_WP_VERSION', '1.0.0');
 define('N8N_WP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('N8N_WP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-// Require autoloader
-require_once N8N_WP_PLUGIN_DIR . 'includes/class-autoloader.php';
-
-// Register autoloader
-$autoloader = new N8N_WP_Autoloader();
-$autoloader->register();
+// Load Composer autoloader
+if (file_exists(N8N_WP_PLUGIN_DIR . 'vendor/autoload.php')) {
+    require_once N8N_WP_PLUGIN_DIR . 'vendor/autoload.php';
+} else {
+    // Fallback to manual autoloader if Composer autoloader is not available
+    require_once N8N_WP_PLUGIN_DIR . 'includes/class-autoloader.php';
+    $autoloader = new N8N_WP_Autoloader();
+    $autoloader->register();
+}
 
 // Initialize the plugin
 new N8N_WP_Plugin();

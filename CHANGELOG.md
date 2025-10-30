@@ -5,6 +5,33 @@ All notable changes to the n8n WordPress Integration plugin will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-10-30
+
+### Changed - Security and Autoloading Improvements
+
+#### Security Enhancement
+- **API key is now required** - Removed backward compatibility that allowed empty API keys
+- All API endpoints now require a configured API key
+- Better error messages for missing or invalid API keys:
+  - "API key is not configured" when no key is set in WordPress options
+  - "API key is required" when request doesn't include the key
+  - "Invalid API key" when provided key doesn't match
+
+#### Autoloading Improvement
+- **Added Composer support** with `composer.json`
+- Plugin now uses Composer's PSR-4 autoloader when available
+- Fallback to custom autoloader if Composer is not installed
+- Optimized autoloader configuration for better performance
+
+### Added
+- `composer.json` with PSR-4 autoload configuration
+- Composer installation step in README.md
+- Better documentation for required API key setup
+
+### Breaking Changes
+- **API key is now mandatory** - Previously, the plugin allowed access without an API key for backward compatibility. This is no longer the case.
+- **Migration Required**: Ensure you set the `n8n_wp_api_key` option before upgrading to avoid API access issues.
+
 ## [1.1.0] - 2025-10-30
 
 ### Changed - Major Refactoring to OOP Architecture

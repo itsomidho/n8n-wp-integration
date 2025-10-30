@@ -32,10 +32,22 @@ class N8N_WP_Auth {
         // Get stored API key from options
         $stored_api_key = get_option('n8n_wp_api_key');
         
-        // If no API key is set, allow access for backward compatibility
-        // In production, you should always set an API key
+        // API key is required - no access without it
         if (empty($stored_api_key)) {
-            return true;
+            return new WP_Error(
+                'rest_forbidden',
+                __('API key is not configured. Please set the n8n_wp_api_key option.', 'n8n-wp-integration'),
+                array('status' => 401)
+            );
+        }
+        
+        // API key must be provided
+        if (empty($api_key)) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('API key is required. Please provide X-N8N-API-Key header or api_key parameter.', 'n8n-wp-integration'),
+                array('status' => 401)
+            );
         }
         
         // Verify API key
