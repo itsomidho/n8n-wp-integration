@@ -5,6 +5,8 @@
  * @package N8N_WP_Integration
  */
 
+namespace N8N_WP;
+
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
@@ -13,7 +15,7 @@ if (!defined('ABSPATH')) {
 /**
  * Authentication class
  */
-class N8N_WP_Auth {
+class Auth {
     
     /**
      * API key option name

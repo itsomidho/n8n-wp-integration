@@ -70,8 +70,9 @@ REST API endpoints handler.
 
 ## Class Loading
 
-Classes are loaded via **Composer's PSR-4 autoloader**:
-- Class: `N8N_WP_ClassName`
+Classes are loaded via **Composer's PSR-4 autoloader** with namespace:
+- Namespace: `N8N_WP`
+- Class: `N8N_WP\ClassName`
 - File: `class-classname.php`
 
 Run `composer install --no-dev` to generate the autoloader.
@@ -79,20 +80,29 @@ Run `composer install --no-dev` to generate the autoloader.
 ## Adding New Classes
 
 1. Create a new file: `class-your-class.php`
-2. Define your class: `class N8N_WP_Your_Class { ... }`
+2. Define your class with namespace: 
+```php
+namespace N8N_WP;
+
+class Your_Class { ... }
+```
 3. Composer's autoloader will handle loading it automatically
 
 Example:
 ```php
 // Create: includes/class-logger.php
-class N8N_WP_Logger {
+namespace N8N_WP;
+
+class Logger {
     public function log($message) {
         error_log('[n8n] ' . $message);
     }
 }
 
 // Use anywhere:
-$logger = new N8N_WP_Logger();
+use N8N_WP\Logger;
+
+$logger = new Logger();
 $logger->log('Hello!');
 ```
 
@@ -106,8 +116,10 @@ composer dump-autoload
 Classes use **Dependency Injection** for loose coupling:
 
 ```php
+namespace N8N_WP;
+
 // API depends on Database and Auth
-class N8N_WP_API {
+class API {
     public function __construct($database, $auth) {
         $this->database = $database;
         $this->auth = $auth;
@@ -115,9 +127,9 @@ class N8N_WP_API {
 }
 
 // Plugin creates and injects dependencies
-$database = new N8N_WP_Database();
-$auth = new N8N_WP_Auth();
-$api = new N8N_WP_API($database, $auth);
+$database = new Database();
+$auth = new Auth();
+$api = new API($database, $auth);
 ```
 
 This makes testing easier and reduces coupling between components.

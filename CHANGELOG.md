@@ -5,6 +5,31 @@ All notable changes to the n8n WordPress Integration plugin will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2025-10-31
+
+### Changed - Added PHP Namespaces
+
+#### Namespace Implementation
+- **Added proper PHP namespaces to all classes** using `N8N_WP` namespace
+- All classes now follow PSR-4 naming convention with namespaces
+- Updated class names:
+  - `N8N_WP_Plugin` → `N8N_WP\Plugin`
+  - `N8N_WP_Database` → `N8N_WP\Database`
+  - `N8N_WP_API` → `N8N_WP\API`
+  - `N8N_WP_Auth` → `N8N_WP\Auth`
+  - `N8N_WP_Admin_Notices` → `N8N_WP\Admin_Notices`
+- Regenerated Composer autoloader for optimized class loading
+- Updated all class references throughout the codebase
+
+### Added
+- PHP namespace declarations in all class files
+- Proper PSR-4 autoloading with namespaces
+
+### Improved
+- Better code organization with namespaces
+- Follows modern PHP standards
+- Cleaner class naming without prefixes
+
 ## [1.4.0] - 2025-10-31
 
 ### Changed - Admin Notices Separation and Header-Only Authentication
@@ -12,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Admin Notices Refactoring
 - **Separated admin notices into independent file** `includes/class-admin-notices.php`
 - Admin notice logic moved out of main plugin file for better organization
-- Created `N8N_WP_Admin_Notices` class for handling all admin notifications
+- Created admin notices handler class for handling all admin notifications
 - Main plugin file now cleaner and more focused
 
 #### Enhanced Authentication Security
@@ -41,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed - Enhanced Authentication and Composer-Only Approach
 
 #### Enhanced Auth Class
-- **Significantly improved N8N_WP_Auth class** with additional security features:
+- **Significantly improved Auth class** with additional security features:
   - Added timing-safe comparison using `hash_equals()` to prevent timing attacks
   - Implemented API key sanitization with `sanitize_text_field()`
   - Added API key format validation (minimum 32 characters, alphanumeric with dash/underscore)

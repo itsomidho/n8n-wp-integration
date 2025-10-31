@@ -27,7 +27,7 @@ if (!file_exists(N8N_WP_PLUGIN_DIR . 'vendor/autoload.php')) {
     require_once N8N_WP_PLUGIN_DIR . 'includes/class-admin-notices.php';
     
     // Show admin notice
-    add_action('admin_notices', array('N8N_WP_Admin_Notices', 'missing_autoloader_notice'));
+    add_action('admin_notices', array('N8N_WP\Admin_Notices', 'missing_autoloader_notice'));
     
     // Stop plugin execution
     return;
@@ -37,4 +37,4 @@ if (!file_exists(N8N_WP_PLUGIN_DIR . 'vendor/autoload.php')) {
 require_once N8N_WP_PLUGIN_DIR . 'vendor/autoload.php';
 
 // Initialize the plugin
-new N8N_WP_Plugin();
+new N8N_WP\Plugin();

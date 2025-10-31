@@ -5,6 +5,8 @@
  * @package N8N_WP_Integration
  */
 
+namespace N8N_WP;
+
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
@@ -13,7 +15,7 @@ if (!defined('ABSPATH')) {
 /**
  * Main plugin class
  */
-class N8N_WP_Plugin {
+class Plugin {
     
     /**
      * Database instance
@@ -51,9 +53,9 @@ class N8N_WP_Plugin {
      * Initialize plugin components
      */
     private function init_components() {
-        $this->database = new N8N_WP_Database();
-        $this->auth = new N8N_WP_Auth();
-        $this->api = new N8N_WP_API($this->database, $this->auth);
+        $this->database = new Database();
+        $this->auth = new Auth();
+        $this->api = new API($this->database, $this->auth);
     }
     
     /**
