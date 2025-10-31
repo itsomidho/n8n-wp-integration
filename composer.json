@@ -1,0 +1,27 @@
+{
+    "name": "itsomidho/n8n-wp-integration",
+    "description": "Integrates n8n workflows with WordPress via custom REST API",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "itsomidho",
+            "homepage": "https://github.com/itsomidho"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "N8N_WP\\": "includes/"
+        },
+        "classmap": [
+            "includes/"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

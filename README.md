@@ -2,6 +2,8 @@
 
 A WordPress plugin that integrates n8n workflows with WordPress through a custom REST API. This plugin creates a custom MySQL table and provides RESTful endpoints for inserting, retrieving, updating, and deleting data from n8n workflows.
 
+**Built with Object-Oriented Programming (OOP)** principles featuring modular architecture, PSR-4 autoloading, and dependency injection.
+
 ## Features
 
 - ✅ Custom MySQL table for storing n8n workflow data
@@ -12,6 +14,9 @@ A WordPress plugin that integrates n8n workflows with WordPress through a custom
 - ✅ Automatic timestamp tracking (created_at, updated_at)
 - ✅ Query filtering and pagination
 - ✅ Clean uninstall (removes table and options)
+- ✅ **OOP Architecture** with separation of concerns
+- ✅ **PSR-4 Autoloading** for automatic class loading
+- ✅ **Modular Design** easy to extend and maintain
 
 ## Installation
 
@@ -21,18 +26,68 @@ A WordPress plugin that integrates n8n workflows with WordPress through a custom
    git clone https://github.com/itsomidho/n8n-wp-integration.git
    ```
 
-2. Activate the plugin through the WordPress admin panel:
+2. Install Composer dependencies:
+   ```bash
+   cd n8n-wp-integration
+   composer install --no-dev
+   ```
+
+3. Activate the plugin through the WordPress admin panel:
    - Navigate to **Plugins** → **Installed Plugins**
    - Find "n8n WordPress Integration"
    - Click **Activate**
 
-3. The plugin will automatically create the custom database table `wp_n8n_data` (prefix may vary based on your WordPress configuration)
+4. The plugin will automatically create the custom database table `wp_n8n_data` (prefix may vary based on your WordPress configuration)
+
+## Architecture
+
+This plugin follows **modern OOP principles** with a clean, modular structure:
+
+```
+n8n-wp-integration/
+├── composer.json              # Composer configuration
+├── n8n-wp-integration.php     # Bootstrap with autoloader check
+├── includes/
+│   ├── class-plugin.php       # Main orchestrator
+│   ├── class-database.php     # Database operations
+│   ├── class-api.php          # REST API endpoints
+│   └── class-auth.php         # Enhanced authentication
+└── uninstall.php              # Cleanup script
+```
+
+**Key Benefits:**
+- **Separation of Concerns**: Each class has a single responsibility
+- **Composer PSR-4 Autoloading**: Professional dependency management
+- **Enhanced Security**: Improved Auth class with timing-safe comparisons
+- **Admin Notices**: Clear error messages if Composer autoloader is missing
+- **Composer PSR-4 Autoloading**: Automatic class loading with Composer
+- **Dependency Injection**: Loose coupling for better testability
+- **Easy to Extend**: Add new features without modifying existing code
+- **Maintainable**: Clear structure makes updates simple
+
+For detailed architecture documentation, see [PLUGIN-STRUCTURE.md](PLUGIN-STRUCTURE.md).
 
 ## Configuration
 
-### Setting up API Key (Recommended)
+### Setting up API Key (Required)
 
-For security, it's recommended to set up an API key:
+**API key authentication is required** for all API endpoints. You have multiple options to set up your API key:
+
+#### Option 1: Admin Settings Page (Recommended)
+
+1. Navigate to **Settings → n8n Integration** in your WordPress admin
+2. Click the **"Generate API Key"** button
+3. Copy the generated key using the **"Copy"** button
+4. Use the key in your n8n workflows
+
+The admin page provides:
+- One-click API key generation
+- Easy copy-to-clipboard functionality
+- Visual status indicators
+- API key deletion option
+- Usage instructions with examples
+
+#### Option 2: WordPress Options
 
 1. Add this line to your `wp-config.php` file or use the WordPress options:
    ```php
@@ -44,7 +99,9 @@ For security, it's recommended to set up an API key:
    update_option('n8n_wp_api_key', 'your-secure-api-key-here');
    ```
 
-Replace `your-secure-api-key-here` with a strong, random string.
+Replace `your-secure-api-key-here` with a strong, random string (minimum 32 characters).
+
+**Note:** Without a configured API key, all API requests will be rejected with a 401 Unauthorized error.
 
 ## API Documentation
 
@@ -54,17 +111,13 @@ All endpoints are prefixed with: `https://your-site.com/wp-json/n8n/v1/`
 
 ### Authentication
 
-Include the API key in one of two ways:
+**API key must be provided via HTTP header only:**
 
-1. **HTTP Header** (recommended):
-   ```
-   X-N8N-API-Key: your-secure-api-key-here
-   ```
+```
+X-N8N-API-Key: your-secure-api-key-here
+```
 
-2. **Query Parameter**:
-   ```
-   ?api_key=your-secure-api-key-here
-   ```
+**Note:** Query parameter authentication has been removed for security reasons. Only the `X-N8N-API-Key` header is accepted.
 
 ### Endpoints
 

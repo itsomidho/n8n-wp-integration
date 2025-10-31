@@ -58,13 +58,19 @@ Before installing the n8n WordPress Integration plugin, ensure you have:
    git clone https://github.com/itsomidho/n8n-wp-integration.git
    ```
 
-3. **Set proper permissions**
+3. **Install Composer dependencies**
    ```bash
-   chmod 755 n8n-wp-integration
-   chmod 644 n8n-wp-integration/*.php
+   cd n8n-wp-integration
+   composer install --no-dev
    ```
 
-4. **Activate via WP-CLI** (if available)
+4. **Set proper permissions**
+   ```bash
+   chmod 755 .
+   chmod 644 *.php
+   ```
+
+5. **Activate via WP-CLI** (if available)
    ```bash
    wp plugin activate n8n-wp-integration
    ```
@@ -81,9 +87,9 @@ SHOW TABLES LIKE '%n8n_data';
 
 You should see a table named `wp_n8n_data` (or with your custom prefix).
 
-### Step 2: Set Up API Key (Strongly Recommended)
+### Step 2: Set Up API Key (**REQUIRED**)
 
-For security, set up an API key using one of these methods:
+**API key authentication is now required** for all API endpoints. Set up your API key using one of these methods:
 
 #### Option A: Using WordPress Admin (with Code Snippets plugin)
 
