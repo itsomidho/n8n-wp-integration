@@ -33,11 +33,6 @@ class Plugin {
     private $api;
     
     /**
-     * Admin Settings instance
-     */
-    private $admin_settings;
-    
-    /**
      * Constructor
      */
     public function __construct() {
@@ -65,7 +60,7 @@ class Plugin {
         
         // Initialize admin settings page
         if (is_admin()) {
-            $this->admin_settings = new Admin_Settings($this->auth);
+            new Admin_Settings($this->auth);
         }
     }
     
