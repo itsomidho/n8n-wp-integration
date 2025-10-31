@@ -5,6 +5,42 @@ All notable changes to the n8n WordPress Integration plugin will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-10-31
+
+### Changed - Enhanced Authentication and Composer-Only Approach
+
+#### Enhanced Auth Class
+- **Significantly improved N8N_WP_Auth class** with additional security features:
+  - Added timing-safe comparison using `hash_equals()` to prevent timing attacks
+  - Implemented API key sanitization with `sanitize_text_field()`
+  - Added API key format validation (minimum 32 characters, alphanumeric with dash/underscore)
+  - Extracted API key retrieval logic to separate method for better organization
+  - Added failed authentication logging (when WP_DEBUG is enabled)
+  - Implemented client IP detection for security logging
+  - Added helper methods: `get_api_key()`, `set_api_key()`, `delete_api_key()`, `is_valid_api_key_format()`
+  - Added static method `generate_api_key()` for secure key generation
+  - Better error codes: `n8n_api_key_not_configured`, `n8n_api_key_missing`, `n8n_api_key_invalid`
+
+#### Composer-Only Autoloading
+- **Removed custom autoloader fallback** - Composer is now required
+- Plugin displays admin notice if `vendor/autoload.php` is missing
+- Clear instructions to run `composer install --no-dev`
+- Stops plugin execution gracefully when autoloader is not found
+- Deleted `includes/class-autoloader.php` file
+
+### Removed
+- Custom PSR-4 autoloader class (now Composer-only)
+- Fallback autoloader logic from main plugin file
+
+### Security
+- Timing-safe API key comparison prevents timing attack vulnerabilities
+- API key validation ensures minimum security standards
+- Failed authentication attempts are logged for security monitoring
+
+### Breaking Changes
+- **Composer is now mandatory** - The plugin will not run without Composer autoloader
+- **Migration Required**: Run `composer install --no-dev` before upgrading
+
 ## [1.2.0] - 2025-10-30
 
 ### Changed - Security and Autoloading Improvements

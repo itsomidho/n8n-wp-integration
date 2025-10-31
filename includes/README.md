@@ -4,11 +4,6 @@ This directory contains the core classes for the n8n WordPress Integration plugi
 
 ## Files
 
-### `class-autoloader.php`
-PSR-4 compliant autoloader that automatically loads classes when needed.
-
-**Purpose**: Eliminates the need for manual `require` statements.
-
 ### `class-plugin.php`
 Main plugin orchestrator that manages all components.
 
@@ -28,12 +23,23 @@ Database operations handler (CRUD).
 - `delete()` - Delete record
 
 ### `class-auth.php`
-Authentication and authorization handler.
+Enhanced authentication and authorization handler.
 
-**Purpose**: Validates API keys for REST API requests.
+**Purpose**: Validates API keys for REST API requests with advanced security features.
 
 **Key Methods**:
-- `check_permission()` - Verify API key
+- `check_permission()` - Verify API key with timing-safe comparison
+- `get_api_key()` - Get stored API key
+- `set_api_key()` - Set API key with validation
+- `delete_api_key()` - Remove API key
+- `is_valid_api_key_format()` - Validate API key format
+- `generate_api_key()` - Generate secure random API key
+
+**Security Features**:
+- Timing-safe comparison prevents timing attacks
+- API key format validation (minimum 32 characters)
+- Failed authentication logging (when WP_DEBUG enabled)
+- Sanitization of all inputs
 
 ### `class-api.php`
 REST API endpoints handler.
@@ -50,17 +56,17 @@ REST API endpoints handler.
 
 ## Class Loading
 
-Classes follow the naming convention:
+Classes are loaded via **Composer's PSR-4 autoloader**:
 - Class: `N8N_WP_ClassName`
 - File: `class-classname.php`
 
-The autoloader automatically loads classes when they are first used, so no manual `require` statements are needed in your code.
+Run `composer install --no-dev` to generate the autoloader.
 
 ## Adding New Classes
 
 1. Create a new file: `class-your-class.php`
 2. Define your class: `class N8N_WP_Your_Class { ... }`
-3. The autoloader will handle loading it automatically
+3. Composer's autoloader will handle loading it automatically
 
 Example:
 ```php
@@ -74,6 +80,11 @@ class N8N_WP_Logger {
 // Use anywhere:
 $logger = new N8N_WP_Logger();
 $logger->log('Hello!');
+```
+
+After adding a new class, you may need to run:
+```bash
+composer dump-autoload
 ```
 
 ## Dependencies
@@ -96,3 +107,4 @@ $api = new N8N_WP_API($database, $auth);
 ```
 
 This makes testing easier and reduces coupling between components.
+

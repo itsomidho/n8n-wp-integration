@@ -21,15 +21,33 @@ define('N8N_WP_VERSION', '1.0.0');
 define('N8N_WP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('N8N_WP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-// Load Composer autoloader
-if (file_exists(N8N_WP_PLUGIN_DIR . 'vendor/autoload.php')) {
-    require_once N8N_WP_PLUGIN_DIR . 'vendor/autoload.php';
-} else {
-    // Fallback to manual autoloader if Composer autoloader is not available
-    require_once N8N_WP_PLUGIN_DIR . 'includes/class-autoloader.php';
-    $autoloader = new N8N_WP_Autoloader();
-    $autoloader->register();
+// Check if Composer autoloader exists
+if (!file_exists(N8N_WP_PLUGIN_DIR . 'vendor/autoload.php')) {
+    // Show admin notice
+    add_action('admin_notices', 'n8n_wp_missing_autoloader_notice');
+    
+    /**
+     * Display admin notice for missing Composer autoloader
+     */
+    function n8n_wp_missing_autoloader_notice() {
+        ?>
+        <div class="notice notice-error">
+            <p>
+                <strong><?php esc_html_e('n8n WordPress Integration:', 'n8n-wp-integration'); ?></strong>
+                <?php esc_html_e('Composer autoloader not found. Please run', 'n8n-wp-integration'); ?>
+                <code>composer install --no-dev</code>
+                <?php esc_html_e('in the plugin directory.', 'n8n-wp-integration'); ?>
+            </p>
+        </div>
+        <?php
+    }
+    
+    // Stop plugin execution
+    return;
 }
+
+// Load Composer autoloader
+require_once N8N_WP_PLUGIN_DIR . 'vendor/autoload.php';
 
 // Initialize the plugin
 new N8N_WP_Plugin();

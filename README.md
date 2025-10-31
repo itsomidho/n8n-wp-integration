@@ -46,18 +46,20 @@ This plugin follows **modern OOP principles** with a clean, modular structure:
 ```
 n8n-wp-integration/
 ├── composer.json              # Composer configuration
-├── n8n-wp-integration.php     # Bootstrap
+├── n8n-wp-integration.php     # Bootstrap with autoloader check
 ├── includes/
-│   ├── class-autoloader.php   # Fallback PSR-4 autoloader
 │   ├── class-plugin.php       # Main orchestrator
 │   ├── class-database.php     # Database operations
 │   ├── class-api.php          # REST API endpoints
-│   └── class-auth.php         # Authentication
+│   └── class-auth.php         # Enhanced authentication
 └── uninstall.php              # Cleanup script
 ```
 
 **Key Benefits:**
 - **Separation of Concerns**: Each class has a single responsibility
+- **Composer PSR-4 Autoloading**: Professional dependency management
+- **Enhanced Security**: Improved Auth class with timing-safe comparisons
+- **Admin Notices**: Clear error messages if Composer autoloader is missing
 - **Composer PSR-4 Autoloading**: Automatic class loading with Composer
 - **Dependency Injection**: Loose coupling for better testability
 - **Easy to Extend**: Add new features without modifying existing code
