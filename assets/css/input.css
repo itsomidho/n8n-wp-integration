@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* WordPress Admin specific styles */
+  .n8n-settings-container {
+    @apply max-w-4xl mx-0 my-10;
+  }
+
+  .n8n-card {
+    @apply bg-wp-admin-card border border-wp-admin-border rounded-lg p-8 mb-5 shadow-wp-card;
+  }
+
+  .n8n-card h2 {
+    @apply mt-0 text-xl font-semibold text-wp-admin-text;
+  }
+
+  .n8n-card p {
+    @apply text-wp-admin-text-light mb-5;
+  }
+
+  .n8n-form-group {
+    @apply mb-6;
+  }
+
+  .n8n-form-group label {
+    @apply block mb-2 font-medium text-wp-admin-text;
+  }
+
+  .n8n-input-wrapper {
+    @apply flex gap-3 items-center;
+  }
+
+  .n8n-api-key-input {
+    @apply flex-1 py-2.5 px-3.5 border border-wp-admin-border-light rounded font-mono text-sm bg-wp-admin-input text-wp-admin-text focus:border-wp-admin-primary focus:outline-none focus:ring-1 focus:ring-wp-admin-primary;
+  }
+
+  .n8n-btn {
+    @apply py-2.5 px-5 border-0 rounded text-sm font-medium cursor-pointer transition-all duration-200 no-underline inline-flex items-center gap-2;
+  }
+
+  .n8n-btn-primary {
+    @apply bg-wp-admin-primary text-white hover:bg-wp-admin-primary-hover;
+  }
+
+  .n8n-btn-secondary {
+    @apply bg-wp-admin-input text-wp-admin-text border border-wp-admin-border-light hover:bg-gray-100;
+  }
+
+  .n8n-btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .n8n-notice {
+    @apply p-3 px-4 rounded mb-5 flex items-start gap-2.5;
+  }
+
+  .n8n-notice-success {
+    @apply bg-wp-admin-success-bg border-l-4 border-wp-admin-success text-wp-admin-text;
+  }
+
+  .n8n-notice-warning {
+    @apply bg-wp-admin-warning-bg border-l-4 border-wp-admin-warning text-wp-admin-text;
+  }
+
+  .n8n-notice-icon {
+    @apply flex-shrink-0 text-lg;
+  }
+
+  .n8n-api-status {
+    @apply inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-sm font-medium;
+  }
+
+  .n8n-api-status.configured {
+    @apply bg-wp-admin-success-bg text-wp-admin-success;
+  }
+
+  .n8n-api-status.not-configured {
+    @apply bg-wp-admin-warning-bg text-yellow-700;
+  }
+
+  .n8n-status-dot {
+    @apply w-2 h-2 rounded-full bg-current;
+  }
+
+  .n8n-code-block {
+    @apply bg-wp-admin-input border border-wp-admin-border rounded p-3 px-4 font-mono text-sm overflow-x-auto my-2.5;
+  }
+
+  .n8n-spinner {
+    @apply border-4 border-gray-200 border-t-wp-admin-primary rounded-full w-4 h-4 animate-spin;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "n8n-wp-integration",
+  "version": "1.0.0",
+  "description": "n8n WordPress Integration Plugin",
+  "scripts": {
+    "build-css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/admin-tailwind.css --watch",
+    "build-css-prod": "tailwindcss -i ./assets/css/input.css -o ./assets/css/admin-tailwind.css --minify",
+    "build-css-dev": "tailwindcss -i ./assets/css/input.css -o ./assets/css/admin-tailwind.css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0"
+  }
+}

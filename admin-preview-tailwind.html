@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>n8n Integration Settings - WordPress Admin (Tailwind CSS)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    background: #f0f0f1;
+    margin: 0;
+    padding: 20px;
+}
+.wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+h1 {
+    font-size: 23px;
+    font-weight: 400;
+    margin: 0 0 20px;
+    padding: 9px 0 4px;
+    line-height: 1.3;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <h1>n8n WordPress Integration</h1>
+    
+    <div class="max-w-4xl mx-0 my-10">
+        
+        <div class="p-3 px-4 rounded mb-5 flex items-start gap-2.5 bg-green-100 border-l-4 border-green-500 text-gray-800" style="display:none;">
+            <span class="flex-shrink-0 text-lg">✅</span>
+            <div>
+                <strong>Success!</strong>
+                <p style="margin: 4px 0 0 0;">New API key generated successfully.</p>
+            </div>
+        </div>
+        
+        <div class="bg-white border border-gray-300 rounded-lg p-8 mb-5 shadow-sm">
+            <h2 class="mt-0 text-xl font-semibold text-gray-800">API Key Configuration</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <strong>Status:</strong>
+                <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-sm font-medium bg-green-100 text-green-700">
+                    <span class="w-2 h-2 rounded-full bg-current"></span>
+                    Configured
+                </span>
+            </div>
+            
+            <p class="text-gray-600 mb-5">The API key is required for all REST API requests. Generate a secure key below or use an existing one.</p>
+            
+            <div class="mb-6">
+                <label for="n8n-api-key" class="block mb-2 font-medium text-gray-800">
+                    API Key
+                </label>
+                <div class="flex gap-3 items-center">
+                    <input 
+                        type="text" 
+                        id="n8n-api-key" 
+                        class="flex-1 py-2.5 px-3.5 border border-gray-400 rounded font-mono text-sm bg-gray-50 text-gray-800 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600" 
+                        value="abc123def456ghi789jkl012mno345pqr678stu901vwx234yz567abc890def123" 
+                        readonly
+                    >
+                    <button type="button" class="py-2.5 px-5 rounded text-sm font-medium cursor-pointer transition-all duration-200 no-underline inline-flex items-center gap-2 bg-gray-50 text-gray-800 border border-gray-400 hover:bg-gray-100">
+                        📋 Copy
+                    </button>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 12px;">
+                <button type="button" class="py-2.5 px-5 rounded text-sm font-medium cursor-pointer transition-all duration-200 no-underline inline-flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700">
+                    🔑 Generate API Key
+                </button>
+                
+                <button type="button" class="py-2.5 px-5 rounded text-sm font-medium cursor-pointer transition-all duration-200 no-underline inline-flex items-center gap-2 bg-gray-50 text-gray-800 border border-gray-400 hover:bg-gray-100">
+                    🗑️ Delete API Key
+                </button>
+            </div>
+        </div>
+        
+        <div class="bg-white border border-gray-300 rounded-lg p-8 mb-5 shadow-sm">
+            <h2 class="mt-0 text-xl font-semibold text-gray-800">Usage Instructions</h2>
+            <p class="text-gray-600 mb-5">Include your API key in all REST API requests using the X-N8N-API-Key header:</p>
+            
+            <div class="bg-gray-50 border border-gray-300 rounded p-3 px-4 font-mono text-sm overflow-x-auto my-2.5">
+                X-N8N-API-Key: your-api-key-here
+            </div>
+            
+            <p class="text-gray-600 mb-5">Example cURL request:</p>
+            
+            <div class="bg-gray-50 border border-gray-300 rounded p-3 px-4 font-mono text-sm overflow-x-auto my-2.5">
+curl -X POST https://yoursite.com/wp-json/n8n/v1/insert \<br>
+&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+&nbsp;&nbsp;-H "X-N8N-API-Key: your-api-key-here" \<br>
+&nbsp;&nbsp;-d '{"workflow_id": "test", "data": {"message": "Hello"}}'
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+// Demo functionality for testing
+document.addEventListener('DOMContentLoaded', function() {
+    // Copy button functionality
+    document.querySelector('button:has([class*="📋"])').addEventListener('click', function() {
+        const input = document.getElementById('n8n-api-key');
+        input.select();
+        document.execCommand('copy');
+        
+        const originalText = this.innerHTML;
+        this.innerHTML = '✅ Copied!';
+        
+        setTimeout(() => {
+            this.innerHTML = originalText;
+        }, 2000);
+    });
+    
+    // Generate button demo
+    document.querySelector('button:has([class*="🔑"])').addEventListener('click', function() {
+        const originalText = this.innerHTML;
+        this.innerHTML = '<span class="border-4 border-gray-200 border-t-blue-600 rounded-full w-4 h-4 animate-spin inline-block mr-2"></span> Generating...';
+        
+        setTimeout(() => {
+            this.innerHTML = originalText;
+            // Show success notice
+            const notice = document.querySelector('.bg-green-100');
+            notice.style.display = 'flex';
+            
+            setTimeout(() => {
+                notice.style.display = 'none';
+            }, 3000);
+        }, 2000);
+    });
+});
+</script>
+</body>
+</html>

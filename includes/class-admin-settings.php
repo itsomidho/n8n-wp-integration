@@ -63,10 +63,10 @@ class Admin_Settings {
             return;
         }
         
-        // Enqueue CSS
+        // Enqueue Tailwind CSS (locally built)
         wp_enqueue_style(
-            'n8n-admin-settings',
-            N8N_WP_PLUGIN_URL . 'assets/css/admin-settings.css',
+            'n8n-admin-tailwind',
+            N8N_WP_PLUGIN_URL . 'assets/css/admin-tailwind.css',
             array(),
             N8N_WP_VERSION
         );
@@ -112,11 +112,11 @@ class Admin_Settings {
         <div class="wrap">
             <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
             
-            <div class="n8n-settings-container">
+            <div class="max-w-4xl mx-0 my-10">
                 
                 <?php if (!$has_api_key): ?>
-                <div class="n8n-notice n8n-notice-warning">
-                    <span class="n8n-notice-icon">⚠️</span>
+                <div class="p-3 px-4 rounded mb-5 flex items-start gap-2.5 bg-orange-50 border-l-4 border-orange-400 text-gray-800">
+                    <span class="flex-shrink-0 text-lg">⚠️</span>
                     <div>
                         <strong><?php esc_html_e('API Key Not Configured', 'n8n-wp-integration'); ?></strong>
                         <p style="margin: 4px 0 0 0;"><?php esc_html_e('Generate an API key to enable the n8n integration.', 'n8n-wp-integration'); ?></p>
@@ -124,35 +124,35 @@ class Admin_Settings {
                 </div>
                 <?php endif; ?>
                 
-                <div class="n8n-card">
-                    <h2><?php esc_html_e('API Key Configuration', 'n8n-wp-integration'); ?></h2>
+                <div class="bg-white border border-gray-300 rounded-lg p-8 mb-5 shadow-sm">
+                    <h2 class="mt-0 text-xl font-semibold text-gray-800"><?php esc_html_e('API Key Configuration', 'n8n-wp-integration'); ?></h2>
                     
                     <div style="margin-bottom: 20px;">
                         <strong><?php esc_html_e('Status:', 'n8n-wp-integration'); ?></strong>
                         <?php if ($has_api_key): ?>
-                            <span class="n8n-api-status configured">
-                                <span class="n8n-status-dot"></span>
+                            <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-sm font-medium bg-green-100 text-green-700">
+                                <span class="w-2 h-2 rounded-full bg-current"></span>
                                 <?php esc_html_e('Configured', 'n8n-wp-integration'); ?>
                             </span>
                         <?php else: ?>
-                            <span class="n8n-api-status not-configured">
-                                <span class="n8n-status-dot"></span>
+                            <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-sm font-medium bg-orange-50 text-orange-700">
+                                <span class="w-2 h-2 rounded-full bg-current"></span>
                                 <?php esc_html_e('Not Configured', 'n8n-wp-integration'); ?>
                             </span>
                         <?php endif; ?>
                     </div>
                     
-                    <p><?php esc_html_e('The API key is required for all REST API requests. Generate a secure key below or use an existing one.', 'n8n-wp-integration'); ?></p>
+                    <p class="text-gray-600 mb-5"><?php esc_html_e('The API key is required for all REST API requests. Generate a secure key below or use an existing one.', 'n8n-wp-integration'); ?></p>
                     
-                    <div class="n8n-form-group">
-                        <label for="n8n-api-key">
+                    <div class="mb-6">
+                        <label for="n8n-api-key" class="block mb-2 font-medium text-gray-800">
                             <?php esc_html_e('API Key', 'n8n-wp-integration'); ?>
                         </label>
-                        <div class="n8n-input-wrapper">
+                        <div class="flex gap-3 items-center">
                             <input 
                                 type="text" 
                                 id="n8n-api-key" 
-                                class="n8n-api-key-input" 
+                                class="flex-1 py-2.5 px-3.5 border border-gray-400 rounded font-mono text-sm bg-gray-50 text-gray-800 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600" 
                                 value="<?php echo esc_attr($api_key); ?>" 
                                 readonly
                                 placeholder="<?php esc_attr_e('Click "Generate API Key" to create a new key', 'n8n-wp-integration'); ?>"
@@ -160,7 +160,7 @@ class Admin_Settings {
                             <button 
                                 type="button" 
                                 id="n8n-copy-btn" 
-                                class="n8n-btn n8n-btn-secondary"
+                                class="py-2.5 px-5 rounded text-sm font-medium cursor-pointer transition-all duration-200 no-underline inline-flex items-center gap-2 bg-gray-50 text-gray-800 border border-gray-400 hover:bg-gray-100 <?php echo !$has_api_key ? 'opacity-50 cursor-not-allowed' : ''; ?>"
                                 <?php echo !$has_api_key ? 'disabled' : ''; ?>
                             >
                                 📋 <?php esc_html_e('Copy', 'n8n-wp-integration'); ?>
@@ -172,7 +172,7 @@ class Admin_Settings {
                         <button 
                             type="button" 
                             id="n8n-generate-btn" 
-                            class="n8n-btn n8n-btn-primary"
+                            class="py-2.5 px-5 rounded text-sm font-medium cursor-pointer transition-all duration-200 no-underline inline-flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
                         >
                             🔑 <?php esc_html_e('Generate API Key', 'n8n-wp-integration'); ?>
                         </button>
@@ -181,7 +181,7 @@ class Admin_Settings {
                         <button 
                             type="button" 
                             id="n8n-delete-btn" 
-                            class="n8n-btn n8n-btn-secondary"
+                            class="py-2.5 px-5 rounded text-sm font-medium cursor-pointer transition-all duration-200 no-underline inline-flex items-center gap-2 bg-gray-50 text-gray-800 border border-gray-400 hover:bg-gray-100"
                         >
                             🗑️ <?php esc_html_e('Delete API Key', 'n8n-wp-integration'); ?>
                         </button>
@@ -189,17 +189,17 @@ class Admin_Settings {
                     </div>
                 </div>
                 
-                <div class="n8n-card">
-                    <h2><?php esc_html_e('Usage Instructions', 'n8n-wp-integration'); ?></h2>
-                    <p><?php esc_html_e('Include your API key in all REST API requests using the X-N8N-API-Key header:', 'n8n-wp-integration'); ?></p>
+                <div class="bg-white border border-gray-300 rounded-lg p-8 mb-5 shadow-sm">
+                    <h2 class="mt-0 text-xl font-semibold text-gray-800"><?php esc_html_e('Usage Instructions', 'n8n-wp-integration'); ?></h2>
+                    <p class="text-gray-600 mb-5"><?php esc_html_e('Include your API key in all REST API requests using the X-N8N-API-Key header:', 'n8n-wp-integration'); ?></p>
                     
-                    <div class="n8n-code-block">
+                    <div class="bg-gray-50 border border-gray-300 rounded p-3 px-4 font-mono text-sm overflow-x-auto my-2.5">
                         X-N8N-API-Key: your-api-key-here
                     </div>
                     
-                    <p><?php esc_html_e('Example cURL request:', 'n8n-wp-integration'); ?></p>
+                    <p class="text-gray-600 mb-5"><?php esc_html_e('Example cURL request:', 'n8n-wp-integration'); ?></p>
                     
-                    <div class="n8n-code-block">
+                    <div class="bg-gray-50 border border-gray-300 rounded p-3 px-4 font-mono text-sm overflow-x-auto my-2.5">
 curl -X POST <?php echo esc_html(get_rest_url(null, 'n8n/v1/insert')); ?> \<br>
   -H "Content-Type: application/json" \<br>
   -H "X-N8N-API-Key: your-api-key-here" \<br>
