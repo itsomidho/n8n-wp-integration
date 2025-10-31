@@ -63,170 +63,37 @@ class Admin_Settings {
             return;
         }
         
-        // Enqueue inline CSS for modern UI
-        wp_add_inline_style('wp-admin', $this->get_admin_css());
-    }
-    
-    /**
-     * Get admin CSS
-     *
-     * @return string CSS styles
-     */
-    private function get_admin_css() {
-        return '
-            .n8n-settings-container {
-                max-width: 800px;
-                margin: 40px 0;
-            }
-            .n8n-card {
-                background: #fff;
-                border: 1px solid #dcdcde;
-                border-radius: 8px;
-                padding: 30px;
-                margin-bottom: 20px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            }
-            .n8n-card h2 {
-                margin-top: 0;
-                font-size: 20px;
-                font-weight: 600;
-                color: #1d2327;
-            }
-            .n8n-card p {
-                color: #50575e;
-                margin-bottom: 20px;
-            }
-            .n8n-form-group {
-                margin-bottom: 24px;
-            }
-            .n8n-form-group label {
-                display: block;
-                margin-bottom: 8px;
-                font-weight: 500;
-                color: #1d2327;
-            }
-            .n8n-input-wrapper {
-                display: flex;
-                gap: 12px;
-                align-items: center;
-            }
-            .n8n-api-key-input {
-                flex: 1;
-                padding: 10px 14px;
-                border: 1px solid #8c8f94;
-                border-radius: 4px;
-                font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", monospace;
-                font-size: 13px;
-                background: #f6f7f7;
-                color: #2c3338;
-            }
-            .n8n-api-key-input:focus {
-                border-color: #2271b1;
-                outline: 2px solid transparent;
-                box-shadow: 0 0 0 1px #2271b1;
-            }
-            .n8n-btn {
-                padding: 10px 20px;
-                border: none;
-                border-radius: 4px;
-                font-size: 14px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.2s;
-                text-decoration: none;
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .n8n-btn-primary {
-                background: #2271b1;
-                color: #fff;
-            }
-            .n8n-btn-primary:hover {
-                background: #135e96;
-                color: #fff;
-            }
-            .n8n-btn-secondary {
-                background: #f6f7f7;
-                color: #2c3338;
-                border: 1px solid #8c8f94;
-            }
-            .n8n-btn-secondary:hover {
-                background: #f0f0f1;
-                color: #2c3338;
-            }
-            .n8n-btn:disabled {
-                opacity: 0.5;
-                cursor: not-allowed;
-            }
-            .n8n-notice {
-                padding: 12px 16px;
-                border-radius: 4px;
-                margin-bottom: 20px;
-                display: flex;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            .n8n-notice-success {
-                background: #d7f0dc;
-                border-left: 4px solid #00a32a;
-                color: #1d2327;
-            }
-            .n8n-notice-warning {
-                background: #fcf3e6;
-                border-left: 4px solid #dba617;
-                color: #1d2327;
-            }
-            .n8n-notice-icon {
-                flex-shrink: 0;
-                font-size: 18px;
-            }
-            .n8n-api-status {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                padding: 4px 12px;
-                border-radius: 12px;
-                font-size: 13px;
-                font-weight: 500;
-            }
-            .n8n-api-status.configured {
-                background: #d7f0dc;
-                color: #00a32a;
-            }
-            .n8n-api-status.not-configured {
-                background: #fcf3e6;
-                color: #b96800;
-            }
-            .n8n-status-dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background: currentColor;
-            }
-            .n8n-code-block {
-                background: #f6f7f7;
-                border: 1px solid #dcdcde;
-                border-radius: 4px;
-                padding: 12px 16px;
-                font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", monospace;
-                font-size: 13px;
-                overflow-x: auto;
-                margin: 10px 0;
-            }
-            .n8n-spinner {
-                border: 3px solid #f3f3f3;
-                border-top: 3px solid #2271b1;
-                border-radius: 50%;
-                width: 16px;
-                height: 16px;
-                animation: n8n-spin 1s linear infinite;
-            }
-            @keyframes n8n-spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        ';
+        // Enqueue CSS
+        wp_enqueue_style(
+            'n8n-admin-settings',
+            N8N_WP_PLUGIN_URL . 'assets/css/admin-settings.css',
+            array(),
+            N8N_WP_VERSION
+        );
+        
+        // Enqueue JavaScript
+        wp_enqueue_script(
+            'n8n-admin-settings',
+            N8N_WP_PLUGIN_URL . 'assets/js/admin-settings.js',
+            array('jquery'),
+            N8N_WP_VERSION,
+            true
+        );
+        
+        // Localize script with translatable strings and nonces
+        wp_localize_script('n8n-admin-settings', 'n8nAdminSettings', array(
+            'confirmGenerate' => __('Generate a new API key? This will replace any existing key.', 'n8n-wp-integration'),
+            'generating' => __('Generating...', 'n8n-wp-integration'),
+            'successTitle' => __('Success!', 'n8n-wp-integration'),
+            'successMessage' => __('New API key generated successfully.', 'n8n-wp-integration'),
+            'errorGenerate' => __('Error generating API key. Please try again.', 'n8n-wp-integration'),
+            'copied' => __('Copied!', 'n8n-wp-integration'),
+            'confirmDelete' => __('Are you sure you want to delete the API key? This will break existing integrations.', 'n8n-wp-integration'),
+            'deleting' => __('Deleting...', 'n8n-wp-integration'),
+            'errorDelete' => __('Error deleting API key. Please try again.', 'n8n-wp-integration'),
+            'generateNonce' => wp_create_nonce('n8n_generate_api_key'),
+            'deleteNonce' => wp_create_nonce('n8n_delete_api_key'),
+        ));
     }
     
     /**
@@ -342,105 +209,6 @@ curl -X POST <?php echo esc_html(get_rest_url(null, 'n8n/v1/insert')); ?> \<br>
                 
             </div>
         </div>
-        
-        <script>
-        jQuery(document).ready(function($) {
-            
-            // Generate API Key
-            $('#n8n-generate-btn').on('click', function() {
-                var $btn = $(this);
-                var originalText = $btn.html();
-                
-                if (!confirm('<?php echo esc_js(__('Generate a new API key? This will replace any existing key.', 'n8n-wp-integration')); ?>')) {
-                    return;
-                }
-                
-                $btn.prop('disabled', true).html('<span class="n8n-spinner"></span> <?php echo esc_js(__('Generating...', 'n8n-wp-integration')); ?>');
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'n8n_generate_api_key',
-                        nonce: '<?php echo wp_create_nonce('n8n_generate_api_key'); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#n8n-api-key').val(response.data.api_key);
-                            $('#n8n-copy-btn').prop('disabled', false);
-                            
-                            // Show success message
-                            var notice = $('<div class="n8n-notice n8n-notice-success" style="display:none;"><span class="n8n-notice-icon">✅</span><div><strong><?php echo esc_js(__('Success!', 'n8n-wp-integration')); ?></strong><p style="margin: 4px 0 0 0;"><?php echo esc_js(__('New API key generated successfully.', 'n8n-wp-integration')); ?></p></div></div>');
-                            $('.n8n-settings-container').prepend(notice);
-                            notice.slideDown();
-                            
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-                        } else {
-                            alert('<?php echo esc_js(__('Error generating API key. Please try again.', 'n8n-wp-integration')); ?>');
-                        }
-                    },
-                    error: function() {
-                        alert('<?php echo esc_js(__('Error generating API key. Please try again.', 'n8n-wp-integration')); ?>');
-                    },
-                    complete: function() {
-                        $btn.prop('disabled', false).html(originalText);
-                    }
-                });
-            });
-            
-            // Copy API Key
-            $('#n8n-copy-btn').on('click', function() {
-                var $input = $('#n8n-api-key');
-                var $btn = $(this);
-                var originalText = $btn.html();
-                
-                $input.select();
-                document.execCommand('copy');
-                
-                $btn.html('✅ <?php echo esc_js(__('Copied!', 'n8n-wp-integration')); ?>');
-                
-                setTimeout(function() {
-                    $btn.html(originalText);
-                }, 2000);
-            });
-            
-            // Delete API Key
-            $('#n8n-delete-btn').on('click', function() {
-                if (!confirm('<?php echo esc_js(__('Are you sure you want to delete the API key? This will break existing integrations.', 'n8n-wp-integration')); ?>')) {
-                    return;
-                }
-                
-                var $btn = $(this);
-                var originalText = $btn.html();
-                
-                $btn.prop('disabled', true).html('<span class="n8n-spinner"></span> <?php echo esc_js(__('Deleting...', 'n8n-wp-integration')); ?>');
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'n8n_delete_api_key',
-                        nonce: '<?php echo wp_create_nonce('n8n_delete_api_key'); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            location.reload();
-                        } else {
-                            alert('<?php echo esc_js(__('Error deleting API key. Please try again.', 'n8n-wp-integration')); ?>');
-                            $btn.prop('disabled', false).html(originalText);
-                        }
-                    },
-                    error: function() {
-                        alert('<?php echo esc_js(__('Error deleting API key. Please try again.', 'n8n-wp-integration')); ?>');
-                        $btn.prop('disabled', false).html(originalText);
-                    }
-                });
-            });
-            
-        });
-        </script>
         <?php
     }
     
