@@ -33,6 +33,11 @@ class Plugin {
     private $api;
     
     /**
+     * Admin Settings instance
+     */
+    private $admin_settings;
+    
+    /**
      * Constructor
      */
     public function __construct() {
@@ -47,6 +52,7 @@ class Plugin {
         register_activation_hook(N8N_WP_PLUGIN_DIR . 'n8n-wp-integration.php', array($this, 'activate'));
         register_deactivation_hook(N8N_WP_PLUGIN_DIR . 'n8n-wp-integration.php', array($this, 'deactivate'));
         add_action('rest_api_init', array($this, 'register_rest_routes'));
+        add_action('wp_ajax_n8n_delete_api_key', array('N8N_WP\Admin_Settings', 'ajax_delete_api_key'));
     }
     
     /**
@@ -56,6 +62,11 @@ class Plugin {
         $this->database = new Database();
         $this->auth = new Auth();
         $this->api = new API($this->database, $this->auth);
+        
+        // Initialize admin settings page
+        if (is_admin()) {
+            $this->admin_settings = new Admin_Settings($this->auth);
+        }
     }
     
     /**

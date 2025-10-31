@@ -71,7 +71,23 @@ For detailed architecture documentation, see [PLUGIN-STRUCTURE.md](PLUGIN-STRUCT
 
 ### Setting up API Key (Required)
 
-**API key authentication is required** for all API endpoints. Set up your API key:
+**API key authentication is required** for all API endpoints. You have multiple options to set up your API key:
+
+#### Option 1: Admin Settings Page (Recommended)
+
+1. Navigate to **Settings → n8n Integration** in your WordPress admin
+2. Click the **"Generate API Key"** button
+3. Copy the generated key using the **"Copy"** button
+4. Use the key in your n8n workflows
+
+The admin page provides:
+- One-click API key generation
+- Easy copy-to-clipboard functionality
+- Visual status indicators
+- API key deletion option
+- Usage instructions with examples
+
+#### Option 2: WordPress Options
 
 1. Add this line to your `wp-config.php` file or use the WordPress options:
    ```php
@@ -83,7 +99,7 @@ For detailed architecture documentation, see [PLUGIN-STRUCTURE.md](PLUGIN-STRUCT
    update_option('n8n_wp_api_key', 'your-secure-api-key-here');
    ```
 
-Replace `your-secure-api-key-here` with a strong, random string.
+Replace `your-secure-api-key-here` with a strong, random string (minimum 32 characters).
 
 **Note:** Without a configured API key, all API requests will be rejected with a 401 Unauthorized error.
 

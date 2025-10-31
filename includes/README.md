@@ -55,6 +55,27 @@ Admin notices handler.
 - Reusable notice system
 - WordPress-standard notice formatting
 
+### `class-admin-settings.php`
+Admin settings page for API key management.
+
+**Purpose**: Provide a user-friendly interface for managing API keys in WordPress admin.
+
+**Key Methods**:
+- `add_admin_menu()` - Register admin menu item
+- `render_settings_page()` - Display the settings page
+- `enqueue_admin_assets()` - Load CSS/JS for the page
+- `ajax_generate_api_key()` - Handle API key generation via AJAX
+- `ajax_delete_api_key()` - Handle API key deletion via AJAX
+
+**Features**:
+- Modern, clean UI design
+- One-click API key generation
+- Copy-to-clipboard functionality
+- API key deletion with confirmation
+- Real-time status updates
+- Security with nonce verification
+- Mobile-responsive design
+
 ### `class-api.php`
 REST API endpoints handler.
 

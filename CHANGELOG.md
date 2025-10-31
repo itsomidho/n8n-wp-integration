@@ -5,6 +5,43 @@ All notable changes to the n8n WordPress Integration plugin will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2025-10-31
+
+### Added - Admin Settings Page
+
+#### Admin Settings Page
+- **New admin settings page** for API key management at Settings → n8n Integration
+- Modern, clean UI with WordPress design standards
+- One-click API key generation with secure random keys (64 characters)
+- Copy-to-clipboard functionality for easy key copying
+- API key deletion with confirmation dialog
+- Real-time status indicator showing if API key is configured
+- AJAX-powered interactions for smooth user experience
+- Responsive design that works on all devices
+- Usage instructions with example cURL command
+- Nonce verification for all AJAX requests
+
+#### Features
+- Read-only input field displaying current API key
+- "Generate API Key" button creates new 64-character secure key
+- "Copy" button for one-click clipboard copy
+- "Delete API Key" button with confirmation (when key exists)
+- Visual status badges (Configured/Not Configured)
+- Warning notice when API key is not configured
+- Success notifications after key generation
+- Inline CSS for modern styling
+
+### Added
+- `includes/class-admin-settings.php` - Admin settings page class
+- Admin menu item under Settings → n8n Integration
+- AJAX handlers for key generation and deletion
+- Modern UI with custom CSS styling
+
+### Improved
+- User experience for API key management
+- Easier onboarding for new users
+- Better visibility of API key configuration status
+
 ## [1.5.0] - 2025-10-31
 
 ### Changed - Added PHP Namespaces
