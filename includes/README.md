@@ -38,8 +38,22 @@ Enhanced authentication and authorization handler.
 **Security Features**:
 - Timing-safe comparison prevents timing attacks
 - API key format validation (minimum 32 characters)
+- **Header-only authentication** - Query parameter support removed
 - Failed authentication logging (when WP_DEBUG enabled)
 - Sanitization of all inputs
+
+### `class-admin-notices.php`
+Admin notices handler.
+
+**Purpose**: Display administrative notifications in WordPress admin panel.
+
+**Key Methods**:
+- `missing_autoloader_notice()` - Display notice when Composer autoloader is missing
+
+**Features**:
+- Separated from main plugin file for better organization
+- Reusable notice system
+- WordPress-standard notice formatting
 
 ### `class-api.php`
 REST API endpoints handler.

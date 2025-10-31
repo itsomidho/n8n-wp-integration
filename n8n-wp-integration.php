@@ -23,24 +23,11 @@ define('N8N_WP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Check if Composer autoloader exists
 if (!file_exists(N8N_WP_PLUGIN_DIR . 'vendor/autoload.php')) {
-    // Show admin notice
-    add_action('admin_notices', 'n8n_wp_missing_autoloader_notice');
+    // Load admin notices class
+    require_once N8N_WP_PLUGIN_DIR . 'includes/class-admin-notices.php';
     
-    /**
-     * Display admin notice for missing Composer autoloader
-     */
-    function n8n_wp_missing_autoloader_notice() {
-        ?>
-        <div class="notice notice-error">
-            <p>
-                <strong><?php esc_html_e('n8n WordPress Integration:', 'n8n-wp-integration'); ?></strong>
-                <?php esc_html_e('Composer autoloader not found. Please run', 'n8n-wp-integration'); ?>
-                <code>composer install --no-dev</code>
-                <?php esc_html_e('in the plugin directory.', 'n8n-wp-integration'); ?>
-            </p>
-        </div>
-        <?php
-    }
+    // Show admin notice
+    add_action('admin_notices', array('N8N_WP_Admin_Notices', 'missing_autoloader_notice'));
     
     // Stop plugin execution
     return;

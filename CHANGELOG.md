@@ -5,6 +5,37 @@ All notable changes to the n8n WordPress Integration plugin will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-10-31
+
+### Changed - Admin Notices Separation and Header-Only Authentication
+
+#### Admin Notices Refactoring
+- **Separated admin notices into independent file** `includes/class-admin-notices.php`
+- Admin notice logic moved out of main plugin file for better organization
+- Created `N8N_WP_Admin_Notices` class for handling all admin notifications
+- Main plugin file now cleaner and more focused
+
+#### Enhanced Authentication Security
+- **Removed query parameter authentication** - API key now accepted via header only
+- Only `X-N8N-API-Key` header is accepted for authentication
+- Removed fallback to `api_key` query parameter for improved security
+- Updated error message to reflect header-only requirement
+- Prevents API key exposure in server logs and browser history
+
+### Added
+- `includes/class-admin-notices.php` - New admin notices handler class
+
+### Removed
+- Query parameter API key authentication (`?api_key=...`)
+
+### Security
+- API keys no longer accepted via query parameters (prevents exposure in logs)
+- Header-only authentication reduces risk of API key leakage
+
+### Breaking Changes
+- **Query parameter authentication removed** - All API requests must include `X-N8N-API-Key` header
+- **Migration Required**: Update n8n workflows to use header authentication instead of query parameters
+
 ## [1.3.0] - 2025-10-31
 
 ### Changed - Enhanced Authentication and Composer-Only Approach

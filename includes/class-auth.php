@@ -93,15 +93,8 @@ class N8N_WP_Auth {
      * @return string|null API key or null if not found
      */
     private function extract_api_key($request) {
-        // Check for API key in header (preferred method)
+        // Check for API key in header only
         $api_key = $request->get_header('X-N8N-API-Key');
-        
-        if (!empty($api_key)) {
-            return sanitize_text_field($api_key);
-        }
-        
-        // Fallback to query parameter
-        $api_key = $request->get_param('api_key');
         
         if (!empty($api_key)) {
             return sanitize_text_field($api_key);
@@ -136,7 +129,7 @@ class N8N_WP_Auth {
         if (empty($provided_api_key)) {
             return new WP_Error(
                 'n8n_api_key_missing',
-                __('API key is required. Please provide X-N8N-API-Key header or api_key parameter.', 'n8n-wp-integration'),
+                __('API key is required. Please provide X-N8N-API-Key header.', 'n8n-wp-integration'),
                 array('status' => 401)
             );
         }

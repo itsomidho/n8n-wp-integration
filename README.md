@@ -95,17 +95,13 @@ All endpoints are prefixed with: `https://your-site.com/wp-json/n8n/v1/`
 
 ### Authentication
 
-Include the API key in one of two ways:
+**API key must be provided via HTTP header only:**
 
-1. **HTTP Header** (recommended):
-   ```
-   X-N8N-API-Key: your-secure-api-key-here
-   ```
+```
+X-N8N-API-Key: your-secure-api-key-here
+```
 
-2. **Query Parameter**:
-   ```
-   ?api_key=your-secure-api-key-here
-   ```
+**Note:** Query parameter authentication has been removed for security reasons. Only the `X-N8N-API-Key` header is accepted.
 
 ### Endpoints
 
