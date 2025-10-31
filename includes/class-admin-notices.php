@@ -21,6 +21,7 @@ class Admin_Notices {
      * Display admin notice for missing Composer autoloader
      */
     public static function missing_autoloader_notice() {
+        
         ?>
         <div class="notice notice-error">
             <p>

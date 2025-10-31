@@ -1,29 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>n8n Integration Settings - WordPress Admin</title>
-<style>
-body {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-    background: #f0f0f1;
-    margin: 0;
-    padding: 20px;
+<?php
+/**
+ * Admin Settings Page Template for n8n WordPress Integration
+ *
+ * @package N8N_WP_Integration
+ *
+ * Available variables:
+ * @var string $page_title   The page title
+ * @var string $api_key      The current API key
+ * @var bool   $has_api_key  Whether an API key exists
+ * @var string $rest_url     The REST API URL
+ */
+
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit;
 }
-.wrap {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-h1 {
-    font-size: 23px;
-    font-weight: 400;
-    margin: 0 0 20px;
-    padding: 9px 0 4px;
-    line-height: 1.3;
-}
-</style>
-</head>
-<body>
+?>
+
 <div class="wrap">
     <h1><?php echo esc_html($page_title); ?></h1>
     
@@ -124,5 +117,3 @@ h1 {
         
     </div>
 </div>
-</body>
-</html>

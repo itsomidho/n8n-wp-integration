@@ -7,9 +7,10 @@
 jQuery(document).ready(function($) {
     
     // Generate API Key
-    $('#n8n-generate-btn').on('click', function() {
-        var $btn = $(this);
-        var originalText = $btn.html();
+    $('#n8n-generate-btn').on('click', function () {
+        
+        const $btn = $(this);
+        const originalText = $btn.html();
         
         if (!confirm(n8nAdminSettings.confirmGenerate)) {
             return;
@@ -51,10 +52,11 @@ jQuery(document).ready(function($) {
     });
     
     // Copy API Key
-    $('#n8n-copy-btn').on('click', function() {
-        var $input = $('#n8n-api-key');
-        var $btn = $(this);
-        var originalText = $btn.html();
+    $('#n8n-copy-btn').on('click', function () {
+        
+        const $input = $('#n8n-api-key');
+        const $btn = $(this);
+        const originalText = $btn.html();
         
         $input.select();
         document.execCommand('copy');
@@ -67,13 +69,14 @@ jQuery(document).ready(function($) {
     });
     
     // Delete API Key
-    $('#n8n-delete-btn').on('click', function() {
+    $('#n8n-delete-btn').on('click', function () {
+        
         if (!confirm(n8nAdminSettings.confirmDelete)) {
             return;
         }
         
-        var $btn = $(this);
-        var originalText = $btn.html();
+        const $btn = $(this);
+        const originalText = $btn.html();
         
         $btn.prop('disabled', true).html('<span class="border-4 border-gray-200 border-t-blue-600 rounded-full w-4 h-4 animate-spin inline-block mr-2"></span> ' + n8nAdminSettings.deleting);
         
@@ -98,5 +101,4 @@ jQuery(document).ready(function($) {
             }
         });
     });
-    
 });

@@ -47,7 +47,6 @@ class Plugin {
         register_activation_hook(N8N_WP_PLUGIN_DIR . 'n8n-wp-integration.php', array($this, 'activate'));
         register_deactivation_hook(N8N_WP_PLUGIN_DIR . 'n8n-wp-integration.php', array($this, 'deactivate'));
         add_action('rest_api_init', array($this, 'register_rest_routes'));
-        add_action('wp_ajax_n8n_delete_api_key', array('N8N_WP\Admin_Settings', 'ajax_delete_api_key'));
     }
     
     /**

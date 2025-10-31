@@ -106,13 +106,15 @@ npm run build-css-dev
 
 ### 6. Preview Files
 
-- `admin-preview.html` - Original design with custom CSS
-- `admin-preview-tailwind.html` - New design with Tailwind CSS (CDN version)
 - `admin-preview-local.html` - New design with local Tailwind CSS build
 
-### 7. Backup
+## File Structure
 
-The original CSS file has been backed up as `assets/css/admin-settings.css.bak` in case you need to reference the original styles.
+```
+assets/css/
+├── input.css              # Source file with Tailwind directives
+└── admin-tailwind.css     # Built CSS file (generated)
+```
 
 ## Usage
 

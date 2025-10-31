@@ -7,6 +7,8 @@
 
 namespace N8N_WP;
 
+use WP_Error;
+
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
@@ -33,6 +35,7 @@ class Auth {
      * @return string|false API key or false if not set
      */
     public function get_api_key() {
+
         return get_option(self::API_KEY_OPTION, false);
     }
     
@@ -43,6 +46,7 @@ class Auth {
      * @return bool True on success, false on failure
      */
     public function set_api_key($api_key) {
+
         // Sanitize the API key
         $api_key = sanitize_text_field($api_key);
         
@@ -60,6 +64,7 @@ class Auth {
      * @return bool True on success, false on failure
      */
     public function delete_api_key() {
+
         return delete_option(self::API_KEY_OPTION);
     }
     
@@ -70,6 +75,7 @@ class Auth {
      * @return bool True if valid, false otherwise
      */
     public function is_valid_api_key_format($api_key) {
+
         // Check if API key is a string
         if (!is_string($api_key)) {
             return false;
@@ -95,6 +101,7 @@ class Auth {
      * @return string|null API key or null if not found
      */
     private function extract_api_key($request) {
+
         // Check for API key in header only
         $api_key = $request->get_header('X-N8N-API-Key');
         
@@ -112,6 +119,7 @@ class Auth {
      * @return bool|WP_Error True if authorized, WP_Error otherwise
      */
     public function check_permission($request) {
+
         // Get stored API key
         $stored_api_key = $this->get_api_key();
         
@@ -162,6 +170,7 @@ class Auth {
      * @return string Client IP address
      */
     private function get_client_ip() {
+
         $ip = '';
         
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -182,6 +191,7 @@ class Auth {
      * @return string Generated API key
      */
     public static function generate_api_key($length = 64) {
+        
         $length = max($length, self::MIN_API_KEY_LENGTH);
         
         // Use WordPress's wp_generate_password for secure random string

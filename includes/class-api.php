@@ -7,6 +7,9 @@
 
 namespace N8N_WP;
 
+use WP_Error;
+use WP_REST_Response;
+
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
@@ -34,32 +37,34 @@ class API {
      * @param N8N_WP_Auth $auth Auth instance
      */
     public function __construct($database, $auth) {
+        
         $this->database = $database;
-        $this->auth = $auth;
+        $this->auth     = $auth;
     }
     
     /**
      * Register REST API routes
      */
     public function register_routes() {
+
         // Insert data endpoint
         register_rest_route('n8n/v1', '/insert', array(
-            'methods' => 'POST',
-            'callback' => array($this, 'insert_data'),
+            'methods'             => 'POST',
+            'callback'            => array($this, 'insert_data'),
             'permission_callback' => array($this->auth, 'check_permission'),
-            'args' => array(
+            'args'                => array(
                 'workflow_id' => array(
-                    'required' => true,
-                    'type' => 'string',
-                    'description' => 'The n8n workflow ID',
+                    'required'          => true,
+                    'type'              => 'string',
+                    'description'       => 'The n8n workflow ID',
                     'sanitize_callback' => 'sanitize_text_field',
                 ),
-                'data' => array(
-                    'required' => true,
+                'data'        => array(
+                    'required'    => true,
                     'description' => 'The data to insert',
                 ),
-                'metadata' => array(
-                    'required' => false,
+                'metadata'    => array(
+                    'required'    => false,
                     'description' => 'Optional metadata',
                 ),
             ),
@@ -67,28 +72,28 @@ class API {
         
         // Get data endpoint
         register_rest_route('n8n/v1', '/data', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_data'),
+            'methods'             => 'GET',
+            'callback'            => array($this, 'get_data'),
             'permission_callback' => array($this->auth, 'check_permission'),
-            'args' => array(
+            'args'                => array(
                 'workflow_id' => array(
-                    'required' => false,
-                    'type' => 'string',
-                    'description' => 'Filter by workflow ID',
+                    'required'          => false,
+                    'type'              => 'string',
+                    'description'       => 'Filter by workflow ID',
                     'sanitize_callback' => 'sanitize_text_field',
                 ),
-                'limit' => array(
-                    'required' => false,
-                    'type' => 'integer',
-                    'default' => 10,
-                    'description' => 'Number of records to return',
+                'limit'       => array(
+                    'required'          => false,
+                    'type'              => 'integer',
+                    'default'           => 10,
+                    'description'       => 'Number of records to return',
                     'sanitize_callback' => 'absint',
                 ),
-                'offset' => array(
-                    'required' => false,
-                    'type' => 'integer',
-                    'default' => 0,
-                    'description' => 'Offset for pagination',
+                'offset'      => array(
+                    'required'          => false,
+                    'type'              => 'integer',
+                    'default'           => 0,
+                    'description'       => 'Offset for pagination',
                     'sanitize_callback' => 'absint',
                 ),
             ),
@@ -96,14 +101,14 @@ class API {
         
         // Get single record endpoint
         register_rest_route('n8n/v1', '/data/(?P<id>\d+)', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_single_data'),
+            'methods'             => 'GET',
+            'callback'            => array($this, 'get_single_data'),
             'permission_callback' => array($this->auth, 'check_permission'),
-            'args' => array(
+            'args'                => array(
                 'id' => array(
-                    'required' => true,
-                    'type' => 'integer',
-                    'description' => 'The record ID',
+                    'required'          => true,
+                    'type'              => 'integer',
+                    'description'       => 'The record ID',
                     'sanitize_callback' => 'absint',
                 ),
             ),
@@ -111,22 +116,22 @@ class API {
         
         // Update data endpoint
         register_rest_route('n8n/v1', '/update/(?P<id>\d+)', array(
-            'methods' => 'PUT',
-            'callback' => array($this, 'update_data'),
+            'methods'             => 'PUT',
+            'callback'            => array($this, 'update_data'),
             'permission_callback' => array($this->auth, 'check_permission'),
-            'args' => array(
-                'id' => array(
-                    'required' => true,
-                    'type' => 'integer',
-                    'description' => 'The record ID',
+            'args'                => array(
+                'id'       => array(
+                    'required'          => true,
+                    'type'              => 'integer',
+                    'description'       => 'The record ID',
                     'sanitize_callback' => 'absint',
                 ),
-                'data' => array(
-                    'required' => false,
+                'data'     => array(
+                    'required'    => false,
                     'description' => 'The data to update',
                 ),
                 'metadata' => array(
-                    'required' => false,
+                    'required'    => false,
                     'description' => 'Optional metadata',
                 ),
             ),
@@ -134,14 +139,14 @@ class API {
         
         // Delete data endpoint
         register_rest_route('n8n/v1', '/delete/(?P<id>\d+)', array(
-            'methods' => 'DELETE',
-            'callback' => array($this, 'delete_data'),
+            'methods'             => 'DELETE',
+            'callback'            => array($this, 'delete_data'),
             'permission_callback' => array($this->auth, 'check_permission'),
-            'args' => array(
+            'args'                => array(
                 'id' => array(
-                    'required' => true,
-                    'type' => 'integer',
-                    'description' => 'The record ID',
+                    'required'          => true,
+                    'type'              => 'integer',
+                    'description'       => 'The record ID',
                     'sanitize_callback' => 'absint',
                 ),
             ),
@@ -155,9 +160,10 @@ class API {
      * @return WP_REST_Response|WP_Error Response object
      */
     public function insert_data($request) {
+
         $workflow_id = $request->get_param('workflow_id');
-        $data = $request->get_param('data');
-        $metadata = $request->get_param('metadata');
+        $data        = $request->get_param('data');
+        $metadata    = $request->get_param('metadata');
         
         $insert_id = $this->database->insert($workflow_id, $data, $metadata);
         
@@ -176,8 +182,8 @@ class API {
             array(
                 'success' => true,
                 'message' => __('Data inserted successfully', 'n8n-wp-integration'),
-                'id' => $insert_id,
-                'data' => $record,
+                'id'      => $insert_id,
+                'data'    => $record,
             ),
             201
         );
@@ -190,17 +196,18 @@ class API {
      * @return WP_REST_Response Response object
      */
     public function get_data($request) {
+
         $workflow_id = $request->get_param('workflow_id');
-        $limit = $request->get_param('limit');
-        $offset = $request->get_param('offset');
+        $limit       = $request->get_param('limit');
+        $offset      = $request->get_param('offset');
         
         $results = $this->database->get($workflow_id, $limit, $offset);
         
         return new WP_REST_Response(
             array(
                 'success' => true,
-                'count' => count($results),
-                'data' => $results,
+                'count'   => count($results),
+                'data'    => $results,
             ),
             200
         );
@@ -213,6 +220,7 @@ class API {
      * @return WP_REST_Response|WP_Error Response object
      */
     public function get_single_data($request) {
+
         $id = $request->get_param('id');
         
         $result = $this->database->get_by_id($id);
@@ -228,7 +236,7 @@ class API {
         return new WP_REST_Response(
             array(
                 'success' => true,
-                'data' => $result,
+                'data'    => $result,
             ),
             200
         );
@@ -241,8 +249,9 @@ class API {
      * @return WP_REST_Response|WP_Error Response object
      */
     public function update_data($request) {
-        $id = $request->get_param('id');
-        $data = $request->get_param('data');
+
+        $id       = $request->get_param('id');
+        $data     = $request->get_param('data');
         $metadata = $request->get_param('metadata');
         
         $result = $this->database->update($id, $data, $metadata);
@@ -267,7 +276,7 @@ class API {
             array(
                 'success' => true,
                 'message' => __('Data updated successfully', 'n8n-wp-integration'),
-                'id' => $id,
+                'id'      => $id,
             ),
             200
         );
@@ -280,6 +289,7 @@ class API {
      * @return WP_REST_Response|WP_Error Response object
      */
     public function delete_data($request) {
+        
         $id = $request->get_param('id');
         
         $result = $this->database->delete($id);

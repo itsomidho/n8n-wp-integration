@@ -31,8 +31,10 @@ class Database {
      * Constructor
      */
     public function __construct() {
+
         global $wpdb;
-        $this->wpdb = $wpdb;
+
+        $this->wpdb       = $wpdb;
         $this->table_name = $wpdb->prefix . 'n8n_data';
     }
     
@@ -40,6 +42,7 @@ class Database {
      * Create custom database table
      */
     public function create_table() {
+
         $charset_collate = $this->wpdb->get_charset_collate();
         
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
@@ -70,6 +73,7 @@ class Database {
      * @return int|false Insert ID on success, false on failure
      */
     public function insert($workflow_id, $data, $metadata = null) {
+
         // Encode data as JSON if it's an array or object
         if (is_array($data) || is_object($data)) {
             $data = json_encode($data);
@@ -85,10 +89,10 @@ class Database {
             $this->table_name,
             array(
                 'workflow_id' => $workflow_id,
-                'data' => $data,
-                'metadata' => $metadata,
-                'created_at' => current_time('mysql'),
-                'updated_at' => current_time('mysql'),
+                'data'        => $data,
+                'metadata'    => $metadata,
+                'created_at'  => current_time('mysql'),
+                'updated_at'  => current_time('mysql'),
             ),
             array('%s', '%s', '%s', '%s', '%s')
         );
@@ -109,13 +113,14 @@ class Database {
      * @return array Array of records
      */
     public function get($workflow_id = null, $limit = 10, $offset = 0) {
+
         // Build query
-        $query = "SELECT * FROM {$this->table_name}";
-        $where = array();
+        $query        = "SELECT * FROM {$this->table_name}";
+        $where        = array();
         $prepare_args = array();
         
         if (!empty($workflow_id)) {
-            $where[] = "workflow_id = %s";
+            $where[]        = "workflow_id = %s";
             $prepare_args[] = $workflow_id;
         }
         
@@ -126,7 +131,7 @@ class Database {
         $query .= " ORDER BY created_at DESC";
         
         // Add limit and offset
-        $query .= " LIMIT %d OFFSET %d";
+        $query          .= " LIMIT %d OFFSET %d";
         $prepare_args[] = $limit;
         $prepare_args[] = $offset;
         
@@ -155,6 +160,7 @@ class Database {
      * @return array|null Record data or null if not found
      */
     public function get_by_id($id) {
+
         $result = $this->wpdb->get_row(
             $this->wpdb->prepare(
                 "SELECT * FROM {$this->table_name} WHERE id = %d",
@@ -185,6 +191,7 @@ class Database {
      * @return bool True on success, false on failure
      */
     public function update($id, $data = null, $metadata = null) {
+
         // Check if record exists
         if (!$this->exists($id)) {
             return false;
@@ -193,6 +200,7 @@ class Database {
         $update_data = array(
             'updated_at' => current_time('mysql'),
         );
+
         $format = array('%s');
         
         // Update data if provided
@@ -201,7 +209,7 @@ class Database {
                 $data = json_encode($data);
             }
             $update_data['data'] = $data;
-            $format[] = '%s';
+            $format[]            = '%s';
         }
         
         // Update metadata if provided
@@ -210,7 +218,7 @@ class Database {
                 $metadata = json_encode($metadata);
             }
             $update_data['metadata'] = $metadata;
-            $format[] = '%s';
+            $format[]                = '%s';
         }
         
         // Update database
@@ -232,6 +240,7 @@ class Database {
      * @return bool True on success, false on failure
      */
     public function delete($id) {
+
         // Check if record exists
         if (!$this->exists($id)) {
             return false;
@@ -254,14 +263,15 @@ class Database {
      * @return bool True if exists, false otherwise
      */
     public function exists($id) {
-        $count = $this->wpdb->get_var(
+
+        $result = $this->wpdb->get_var(
             $this->wpdb->prepare(
                 "SELECT COUNT(*) FROM {$this->table_name} WHERE id = %d",
                 $id
             )
         );
         
-        return $count > 0;
+        return !empty($result);
     }
     
     /**
@@ -270,6 +280,7 @@ class Database {
      * @return string Last error message
      */
     public function get_last_error() {
+        
         return $this->wpdb->last_error;
     }
 }
