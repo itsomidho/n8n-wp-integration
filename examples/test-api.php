@@ -2,8 +2,12 @@
 /**
  * Example PHP script to test the n8n WordPress Integration API
  * 
- * This file demonstrates how to use the REST API endpoints
+ * This file demonstrates how to use the REST API endpoints with WordPress HTTP API functions
  * You can run this script from command line or include it in your PHP application
+ * 
+ * Note: This script requires WordPress to be loaded (uses wp_remote_request functions)
+ * To run standalone, you need to load WordPress:
+ * require_once('/path/to/wordpress/wp-load.php');
  */
 
 // Configuration
@@ -11,35 +15,52 @@ $wordpress_url = 'https://your-wordpress-site.com';
 $api_key = 'your-secure-api-key-here';
 
 /**
- * Make API request
+ * Make API request using WordPress HTTP API
  */
 function make_api_request($url, $method = 'GET', $data = null, $api_key = null) {
-    $ch = curl_init();
-    
+    // Prepare headers
     $headers = array(
-        'Content-Type: application/json',
+        'Content-Type' => 'application/json',
     );
     
     if ($api_key) {
-        $headers[] = 'X-N8N-API-Key: ' . $api_key;
+        $headers['X-N8N-API-Key'] = $api_key;
     }
     
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+    // Prepare arguments for wp_remote_request
+    $args = array(
+        'method' => $method,
+        'headers' => $headers,
+        'timeout' => 30,
+        'sslverify' => true,
+    );
     
+    // Add body data for POST/PUT/PATCH requests
     if ($data !== null) {
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        $args['body'] = json_encode($data);
     }
     
-    $response = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    // Make the request
+    $response = wp_remote_request($url, $args);
+    
+    // Check for errors
+    if (is_wp_error($response)) {
+        return array(
+            'status' => 0,
+            'body' => array(
+                'error' => true,
+                'message' => $response->get_error_message()
+            )
+        );
+    }
+    
+    // Get response code and body
+    $http_code = wp_remote_retrieve_response_code($response);
+    $response_body = wp_remote_retrieve_body($response);
     
     return array(
         'status' => $http_code,
-        'body' => json_decode($response, true)
+        'body' => json_decode($response_body, true)
     );
 }
 
